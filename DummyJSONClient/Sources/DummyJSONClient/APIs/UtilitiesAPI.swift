@@ -5,8 +5,15 @@ extension DummyJSONAPI {
         try await execute(Endpoint(method: .get, path: ["ip"]))
     }
 
-    public func healthCheck() async throws -> HealthCheckResponse {
-        try await execute(Endpoint(method: .get, path: ["test"]))
+    public func healthCheck(method: UtilityHTTPMethod = .get) async throws -> HealthCheckResponse {
+        try await execute(Endpoint(method: method.endpointMethod, path: ["test"]))
+    }
+
+    public func httpStatus(code: Int, message: String? = nil, method: UtilityHTTPMethod = .get) async throws -> HTTPStatusResponse {
+        try await execute(Endpoint(
+            method: method.endpointMethod,
+            path: ["http", String(code)] + [message].compactMap { $0 }
+        ))
     }
 
     public func totp(key: String) async throws -> TOTPResponse {
@@ -23,18 +30,23 @@ extension DummyJSONAPI {
 
     public func customResponse<Response: Decodable & Sendable>(
         identifier: String,
+        method: UtilityHTTPMethod = .get,
         as responseType: Response.Type = Response.self
     ) async throws -> Response {
-        try await execute(Endpoint(method: .get, path: ["c", identifier]), as: responseType)
+        try await execute(Endpoint(method: method.endpointMethod, path: ["c", identifier]), as: responseType)
     }
 
     public func createWebhook() async throws -> CreateWebhookResponse {
         try await execute(Endpoint(method: .post, path: ["webhook", "create"]))
     }
 
-    public func captureWebhook(identifier: String, body: JSONValue? = nil) async throws -> CaptureWebhookResponse {
+    public func captureWebhook(
+        identifier: String,
+        method: UtilityHTTPMethod = .post,
+        body: JSONValue? = nil
+    ) async throws -> CaptureWebhookResponse {
         try await execute(Endpoint(
-            method: .post,
+            method: method.endpointMethod,
             path: ["webhook", identifier],
             body: try body.map(Endpoint.encode)
         ))

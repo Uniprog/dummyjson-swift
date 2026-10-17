@@ -7,6 +7,8 @@ struct Endpoint: Sendable {
         case put = "PUT"
         case patch = "PATCH"
         case delete = "DELETE"
+        case head = "HEAD"
+        case options = "OPTIONS"
     }
 
     let method: Method

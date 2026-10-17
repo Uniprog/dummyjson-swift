@@ -251,12 +251,14 @@ between endpoint groups must be verified against the pinned upstream responses.
 
 ## Swift API Client Requirements
 
-### Implemented: Core and Products
+### Implemented Client Surface
 
 The public module is `DummyJSONClient`; the client is `DummyJSONAPI`. The client
-is `Sendable` and uses async/await. Core and all ten Products routes are implemented;
-authentication, replaceable token storage, refresh coordination, and other resource
-groups remain subsequent increments. Products requests do not attach bearer tokens.
+is `Sendable` and uses async/await. Typed APIs are implemented for Products, Carts,
+Users, Posts, Comments, Todos, Quotes, Recipes, Authentication, and Utilities.
+Authentication includes replaceable token storage, bearer headers, one retry after a
+401 response, concurrent refresh deduplication, logout, and cancellation propagation.
+Unauthenticated resource requests do not attach bearer tokens.
 
 ```swift
 import DummyJSONClient

@@ -39,6 +39,36 @@ public struct HealthCheckResponse: Decodable, Equatable, Sendable {
     public let method: String
 }
 
+public enum UtilityHTTPMethod: String, Sendable, Equatable {
+    case get = "GET"
+    case post = "POST"
+    case put = "PUT"
+    case patch = "PATCH"
+    case delete = "DELETE"
+    case head = "HEAD"
+    case options = "OPTIONS"
+
+    var endpointMethod: Endpoint.Method {
+        switch self {
+        case .get: .get
+        case .post: .post
+        case .put: .put
+        case .patch: .patch
+        case .delete: .delete
+        case .head: .head
+        case .options: .options
+        }
+    }
+}
+
+public struct HTTPStatusResponse: Decodable, Equatable, Sendable {
+    public let status: Int
+    public let message: String?
+    public let title: String?
+    public let type: String?
+    public let detail: String?
+}
+
 public struct TOTPRequest: Encodable, Equatable, Sendable {
     public let key: String
     public init(key: String) { self.key = key }

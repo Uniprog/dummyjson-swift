@@ -12,7 +12,9 @@ extension DummyJSONAPI {
     }
 
     public func randomQuotes(count: Int) async throws -> [Quote] {
-        guard count > 0 else { throw DummyJSONError.invalidRequest("Random quote count must be positive.") }
+        guard (1...10).contains(count) else {
+            throw DummyJSONError.invalidRequest("Random quote count must be between 1 and 10.")
+        }
         return try await execute(Endpoint(method: .get, path: ["quotes", "random", String(count)]))
     }
 }

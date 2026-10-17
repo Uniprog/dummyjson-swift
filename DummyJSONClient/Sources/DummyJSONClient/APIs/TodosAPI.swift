@@ -16,7 +16,9 @@ extension DummyJSONAPI {
     }
 
     public func randomTodos(count: Int) async throws -> [Todo] {
-        guard count > 0 else { throw DummyJSONError.invalidRequest("Random todo count must be positive.") }
+        guard (1...10).contains(count) else {
+            throw DummyJSONError.invalidRequest("Random todo count must be between 1 and 10.")
+        }
         return try await execute(Endpoint(method: .get, path: ["todos", "random", String(count)]))
     }
 
