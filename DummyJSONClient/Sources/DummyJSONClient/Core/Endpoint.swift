@@ -13,6 +13,7 @@ struct Endpoint: Sendable {
     let path: [String]
     var query: [URLQueryItem] = []
     var body: Data? = nil
+    var bearerToken: String? = nil
 
     func request(configuration: DummyJSONConfiguration) throws -> URLRequest {
         guard var components = URLComponents(string: configuration.baseURL),
@@ -45,6 +46,9 @@ struct Endpoint: Sendable {
         request.httpMethod = method.rawValue
         request.httpShouldHandleCookies = false
         request.setValue("application/json", forHTTPHeaderField: "Accept")
+        if let bearerToken {
+            request.setValue("Bearer \(bearerToken)", forHTTPHeaderField: "Authorization")
+        }
         request.httpBody = body
         if body != nil {
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")

@@ -8,6 +8,7 @@ public enum DummyJSONError: Error {
     case invalidResponse
     case http(statusCode: Int, message: String?, body: Data)
     case decoding(underlying: any Error)
+    case authenticationRequired
 }
 
 extension DummyJSONError: LocalizedError {
@@ -25,6 +26,8 @@ extension DummyJSONError: LocalizedError {
             return "HTTP \(statusCode): \(message ?? HTTPURLResponse.localizedString(forStatusCode: statusCode))"
         case .decoding(let underlying):
             return "Response decoding failed: \(underlying.localizedDescription)"
+        case .authenticationRequired:
+            return "Authentication is required."
         }
     }
 }
