@@ -41,6 +41,15 @@ public typealias CreatePostRequest = PostMutationRequest
 public typealias ReplacePostRequest = PostMutationRequest
 public typealias UpdatePostRequest = PostMutationRequest
 
+public struct PostMutationResponse: Decodable, Equatable, Sendable {
+    public let id: Int
+    public let title: String?
+    public let body: String?
+    public let tags: [String]?
+    public let reactions: PostReactions?
+    public let userId: Int?
+}
+
 public struct DeletePostResponse: Decodable, Sendable {
     public let post: Post
     public let isDeleted: Bool

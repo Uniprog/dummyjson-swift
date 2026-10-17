@@ -21,10 +21,16 @@ actor AuthenticationCoordinator {
     }
 
     func refresh(
+        afterRejecting rejectedAccessToken: String? = nil,
         using operation: @escaping @Sendable (String) async throws -> AuthenticationTokens
     ) async throws -> AuthenticationTokens {
         if let refreshTask {
             return try await refreshTask.value
+        }
+        if let rejectedAccessToken,
+           let current = await store.tokens(),
+           current.accessToken != rejectedAccessToken {
+            return current
         }
         guard let refreshToken = await store.tokens()?.refreshToken else {
             throw DummyJSONError.authenticationRequired

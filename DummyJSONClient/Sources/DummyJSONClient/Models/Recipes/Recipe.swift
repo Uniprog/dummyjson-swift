@@ -55,6 +55,23 @@ public typealias CreateRecipeRequest = RecipeMutationRequest
 public typealias ReplaceRecipeRequest = RecipeMutationRequest
 public typealias UpdateRecipeRequest = RecipeMutationRequest
 
+public struct RecipeMutationResponse: Decodable, Equatable, Sendable {
+    public let id: Int
+    public let name: String?
+    public let ingredients: [String]?
+    public let instructions: [String]?
+    public let prepTimeMinutes: Int?
+    public let cookTimeMinutes: Int?
+    public let servings: Int?
+    public let difficulty: String?
+    public let cuisine: String?
+    public let caloriesPerServing: Int?
+    public let tags: [String]?
+    public let userId: Int?
+    public let image: String?
+    public let mealType: [String]?
+}
+
 public struct DeleteRecipeResponse: Decodable, Sendable {
     public let recipe: Recipe
     public let isDeleted: Bool

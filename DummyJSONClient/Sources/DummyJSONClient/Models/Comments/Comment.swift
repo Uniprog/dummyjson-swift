@@ -30,6 +30,14 @@ public typealias CreateCommentRequest = CommentMutationRequest
 public typealias ReplaceCommentRequest = CommentMutationRequest
 public typealias UpdateCommentRequest = CommentMutationRequest
 
+public struct CommentMutationResponse: Decodable, Equatable, Sendable {
+    public let id: Int
+    public let body: String
+    public let postId: Int
+    public let likes: Int?
+    public let user: CommentUser
+}
+
 public struct DeleteCommentResponse: Decodable, Sendable {
     public let comment: Comment
     public let isDeleted: Bool

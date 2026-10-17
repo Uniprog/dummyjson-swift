@@ -47,6 +47,29 @@ public struct DummyJSONAPI: Sendable {
         }
     }
 
+    func executeData(_ endpoint: Endpoint) async throws -> Data {
+        try Task.checkCancellation()
+        let request = try endpoint.request(configuration: configuration)
+        do {
+            let (data, response) = try await transport.data(for: request)
+            try Task.checkCancellation()
+            guard let response = response as? HTTPURLResponse else {
+                throw DummyJSONError.invalidResponse
+            }
+            guard (200..<300).contains(response.statusCode) else {
+                let message = try? JSONDecoder().decode(ServerError.self, from: data).message
+                throw DummyJSONError.http(statusCode: response.statusCode, message: message, body: data)
+            }
+            return data
+        } catch {
+            if error is CancellationError || (error as? URLError)?.code == .cancelled || Task.isCancelled {
+                throw CancellationError()
+            }
+            if error is DummyJSONError { throw error }
+            throw DummyJSONError.transport(underlying: error)
+        }
+    }
+
     func executeAuthenticated<Response: Decodable & Sendable>(
         _ endpoint: Endpoint,
         as responseType: Response.Type = Response.self
@@ -59,7 +82,7 @@ public struct DummyJSONAPI: Sendable {
         do {
             return try await execute(request, as: responseType)
         } catch DummyJSONError.http(let statusCode, _, _) where statusCode == 401 {
-            let tokens = try await authentication.refresh { refreshToken in
+            let tokens = try await authentication.refresh(afterRejecting: token) { refreshToken in
                 try await performRefresh(refreshToken: refreshToken)
             }
             request.bearerToken = tokens.accessToken

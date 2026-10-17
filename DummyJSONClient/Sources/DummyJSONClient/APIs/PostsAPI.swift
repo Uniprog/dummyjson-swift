@@ -19,8 +19,8 @@ extension DummyJSONAPI {
     public func commentsForPost(id: Int, query: ResourceQuery = .init()) async throws -> CommentListResponse {
         try await execute(Endpoint(method: .get, path: ["posts", String(id), "comments"], query: query.queryItems()))
     }
-    public func addPost(_ request: CreatePostRequest) async throws -> Post { try await execute(Endpoint(method: .post, path: ["posts", "add"], body: Endpoint.encode(request))) }
-    public func replacePost(id: Int, with request: ReplacePostRequest) async throws -> Post { try await execute(Endpoint(method: .put, path: ["posts", String(id)], body: Endpoint.encode(request))) }
-    public func updatePost(id: Int, with request: UpdatePostRequest) async throws -> Post { try await execute(Endpoint(method: .patch, path: ["posts", String(id)], body: Endpoint.encode(request))) }
+    public func addPost(_ request: CreatePostRequest) async throws -> PostMutationResponse { try await execute(Endpoint(method: .post, path: ["posts", "add"], body: Endpoint.encode(request))) }
+    public func replacePost(id: Int, with request: ReplacePostRequest) async throws -> PostMutationResponse { try await execute(Endpoint(method: .put, path: ["posts", String(id)], body: Endpoint.encode(request))) }
+    public func updatePost(id: Int, with request: UpdatePostRequest) async throws -> PostMutationResponse { try await execute(Endpoint(method: .patch, path: ["posts", String(id)], body: Endpoint.encode(request))) }
     public func deletePost(id: Int) async throws -> DeletePostResponse { try await execute(Endpoint(method: .delete, path: ["posts", String(id)])) }
 }
