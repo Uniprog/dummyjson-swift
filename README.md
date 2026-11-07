@@ -8,8 +8,10 @@ icons, and HTTP testing utilities. It uses Swift concurrency throughout and keep
 the HTTP transport injectable for deterministic testing.
 
 > [!IMPORTANT]
-> `DummyJSONClient` is an early-stage package that has not yet been validated in
-> production. Its public API may change before version 1.0.0.
+> `DummyJSONClient` is an early-stage, AI-assisted package developed with OpenAI
+> Codex. AI-generated changes have been reviewed and tested by the project
+> maintainer, but the package has not yet been validated in production. Its
+> public API may change before version 1.0.0.
 
 ## Requirements
 
