@@ -9,23 +9,22 @@ permissions:
 
 jobs:
   build-and-test:
-    name: Build and test with Swift 6.3
+    name: Build and test with Xcode 26.6 / Swift 6.3
     # Keep the runner stable instead of following the moving macos-latest label.
     runs-on: macos-26
     timeout-minutes: 15
+    # Xcode 26.6 provides the package's minimum supported Swift 6.3 toolchain.
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
 
-      # Pin the third-party action to an immutable commit for supply-chain safety.
-      - name: Set up Swift 6.3
-        uses: swift-actions/setup-swift@65540b95f51493d65f5e59e97dcef9629ddf11bf # v2
-        with:
-          swift-version: "6.3"
-
-      - name: Show Swift version
-        run: swift --version
+      - name: Show toolchain versions
+        run: |
+          xcodebuild -version
+          swift --version
 
       - name: Build package
         run: swift build
