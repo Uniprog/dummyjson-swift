@@ -7,6 +7,10 @@ recipes, authentication, webhooks, custom responses, TOTP, placeholder images,
 icons, and HTTP testing utilities. It uses Swift concurrency throughout and keeps
 the HTTP transport injectable for deterministic testing.
 
+> [!IMPORTANT]
+> `DummyJSONClient` is an early-stage package that has not yet been validated in
+> production. Its public API may change before version 1.0.0.
+
 ## Requirements
 
 - Swift 6.3+
@@ -29,7 +33,7 @@ Or add it to `Package.swift`:
 dependencies: [
     .package(
         url: "https://github.com/Uniprog/dummyjson-swift.git",
-        from: "1.0.0"
+        from: "0.1.0"
     )
 ]
 ```
